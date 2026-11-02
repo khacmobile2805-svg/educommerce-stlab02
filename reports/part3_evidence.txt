@@ -1,0 +1,29 @@
+3.1 Hai SKU, một SKU thiếu kho (cả hai thứ tự dòng)
+  ('A', 2, 'B', 100): OUT_OF_STOCK; kho={'A': 20, 'B': 15, 'C': 12}; orders=0
+  ('B', 100, 'A', 2): OUT_OF_STOCK; kho={'A': 20, 'B': 15, 'C': 12}; orders=0
+3.2 Voucher: declined rồi đặt lại
+  lần 1: PAYMENT_DECLINED; used_codes=set()
+  lần 2: PAID; discount=60000; used_codes={'SAVE10'}; kho={'A': 14, 'B': 15, 'C': 12}
+3.4 Giá đổi giữa add-to-cart và checkout
+  subtotal lúc thêm = 300000
+  subtotal sau khi đổi giá = 350000
+3.5 Cùng SKU nhập hai lần
+  lines=[('A', 5)]; subtotal=1000000
+  add(A,-1) -> INVALID_QUANTITY; lines=[('A', 5)]
+  add(A,2.0) -> INVALID_QUANTITY; lines=[('A', 5)]
+  add(A,True) được chấp nhận -> lines=[('A', 6)]
+  tổng 36 sản phẩm A tại checkout -> OUT_OF_STOCK
+3.6 Shared fixture vs fixture mới
+  case 2 trên fixture DÙNG CHUNG -> OUT_OF_STOCK
+  case 2 trên fixture MỚI -> PAID
+3.7 Tính đầy đủ dữ liệu: 17 case hợp lệ + 3 dòng lỗi
+  20 dòng -> {'PASS': 15, 'FAIL': 2, 'BLOCKED': 3}
+  TC-BAD-01: UNKNOWN_FIXTURE:999k
+  TC-BAD-02: BAD_JSON:Expecting property name enclosed in double quotes
+  TC-BAD-03: UNKNOWN_OP:refund
+3.8 Ngưỡng miễn ship hiện tại (code dùng 500.000, cứng)
+  nội thành 499999: phí = 30000
+  nội thành 500000: phí = 0
+  nội thành 600000: phí = 0
+  nội thành 699999: phí = 0
+  nội thành 700000: phí = 0

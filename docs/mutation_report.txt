@@ -1,0 +1,12 @@
+Mutant                                              test_cases.csv  submitted_test_cases.c
+M1 total quên cộng phí ship                        KILLED (1 FAIL)                SURVIVED
+M2 giảm giá sai (5% thay vì 10%)                   KILLED (1 FAIL)                SURVIVED
+M3 reserve không trừ kho                           KILLED (6 FAIL)         KILLED (2 FAIL)
+M4 ngưỡng ship '>' thay vì '>='                    KILLED (1 FAIL)         KILLED (1 FAIL)
+M5 COD trả trạng thái PAID                         KILLED (1 FAIL)         KILLED (1 FAIL)
+M6 không đánh dấu voucher đã dùng                  KILLED (2 FAIL)         KILLED (2 FAIL)
+M7 bỏ kiểm tra giỏ rỗng                            KILLED (2 FAIL)         KILLED (2 FAIL)
+M8 bỏ kiểm tra voucher đã dùng                     KILLED (2 FAIL)         KILLED (2 FAIL)
+M9 bỏ kiểm tra payment declined                    KILLED (3 FAIL)         KILLED (3 FAIL)
+------------------------------------------------------------------------------------------
+Mutation score                                          9/9 = 100%               7/9 = 78%

@@ -1,0 +1,17 @@
+--- a/ecommerce_app.py
++++ b/ecommerce_app.py
+@@ -98,8 +98,12 @@
+         # Reserve stock during the checkout transaction.
+         self.inventory.reserve(cart.lines)
+         if key in self.by_key: return self.orders[self.by_key[key]]
+-        # Process the online payment outcome.
+-        payment_state = self.payments.collect(total, method, approved, key)
++        # Process the online payment outcome. FIX: nếu payment lỗi (declined / method sai) thì trả stock đã giữ.
++        try:
++            payment_state = self.payments.collect(total, method, approved, key)
++        except ValueError:
++            self.inventory.release(cart.lines)
++            raise
+         self.counter += 1
+         order = Order(f'ORD-{self.counter:04d}', customer.customer_id, total, payment_state,
+                       [(x.sku, x.quantity) for x in cart.lines], discount, shipping, method)

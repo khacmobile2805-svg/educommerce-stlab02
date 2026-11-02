@@ -1,6 +1,6 @@
-"""EduCommerce: in-memory application for practicing checkout and automated testing."""
-# BẢN SỬA (chỉ để regression REQ-16; fix rollback khi payment lỗi). NGUỒN GỐC: STLab02 Instruction mục 2.6 (thầy Tuấn cung cấp). KHÔNG sửa code ở đây khi chạy test;
-# nếu muốn sửa bug để regression, làm trên bản sao ecommerce_app_fixed.py.
+"""EduCommerce: ứng dụng chạy trong bộ nhớ để thực hành thanh toán và kiểm thử tự động (BẢN ĐÃ SỬA)."""
+# BẢN SỬA của ecommerce_app.py (mã nguồn gốc: STLab02 Instruction mục 2.6, do thầy cung cấp). Chỉ sửa DEF-PMS-001:
+# trả lại tồn kho khi thanh toán thất bại. Dùng riêng cho regression; bản gốc ecommerce_app.py giữ nguyên.
 from dataclasses import dataclass, field
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional

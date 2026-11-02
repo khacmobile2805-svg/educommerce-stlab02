@@ -1,0 +1,13 @@
+case_id,requirement_id,condition_id,scenario_id,fixture,operation,voucher,assertion,expected_value,expected_error,priority,precondition,steps
+TC-PRO-001,REQ-06,COND-P1,TS-PRO-VALID,600k,voucher,SAVE10,equals,60000,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-PRO-002,REQ-06,COND-P2,TS-PRO-BOUNDARY,500k,voucher,SAVE10,equals,50000,,P0,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-PRO-003,REQ-06,COND-P2,TS-PRO-BOUNDARY,499999,voucher,SAVE10,equals,ERROR:MIN_SUBTOTAL_NOT_MET,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-PRO-004,REQ-06,COND-P3,TS-PRO-CAP,1500k,voucher,SAVE10,equals,100000,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-PRO-005,REQ-06,COND-P3,TS-PRO-CAP,1000k,voucher,SAVE10,equals,100000,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-PRO-006,REQ-06,COND-P4,TS-PRO-NO-VOUCHER,300k,voucher,,equals,0,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-INV-001,REQ-08,COND-I1,TS-INV-ENOUGH,600k,payment_success,SAVE10,equals,PAID,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-INV-002,REQ-08,COND-I2,TS-INV-INSUFFICIENT,600k,stock_failure,SAVE10,equals,ERROR:OUT_OF_STOCK,,P1,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-INV-003,REQ-08,COND-I3,TS-INV-PAYMENT-ROLLBACK,600k,payment_failure,,stock_unchanged,UNCHANGED,PAYMENT_DECLINED,P0,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-INV-004,REQ-08,COND-I3,TS-INV-PAYMENT-ROLLBACK,500k,payment_failure,,stock_unchanged,UNCHANGED,PAYMENT_DECLINED,P0,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-IDM-001,REQ-11,COND-D1,TS-IDM-RETRY,600k,retry,,retry_stock_once,ONCE,,P0,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual
+TC-IDM-002,REQ-11,COND-D1,TS-IDM-RETRY,300k,retry,,retry_stock_once,ONCE,,P0,New authenticated user; inventory initialized,Build fixture -> invoke business function -> compare expected to actual

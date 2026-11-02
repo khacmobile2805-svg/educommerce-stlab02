@@ -1,4 +1,4 @@
-"""STLab02 - CSV-driven test execution for EduCommerce (REQ-07, 09, 10, 14, 16).
+"""STLab02 - Chạy test hướng dữ liệu từ CSV cho EduCommerce (REQ-07, 09, 10, 14, 16).
 
 Luồng: CSV -> validate schema -> fixture riêng -> dispatcher (op) -> so sánh expected/actual
        -> PASS / FAIL / BLOCKED -> CSV + Excel + HTML dashboard + chart.
@@ -67,8 +67,10 @@ def run_operation(app, user, cart, spec):
 
 def observe(app, user, order, error, before):
     """Gom actual: giá trị trả về + STATE sau thao tác (stock, orders, charges, used_codes)."""
+    after = stock_of(app)
     obs = {"error": error or "NONE", "orders": len(app.orders), "charges": len(app.payments.charges),
-           "stock_unchanged": stock_of(app) == before, "used_codes": sorted(user.used_codes)}
+           "stock_unchanged": after == before, "used_codes": sorted(user.used_codes),
+           "stock_delta": {k: after[k] - before[k] for k in after if after[k] != before[k]}}   # vd {"A": -3}
     if isinstance(order, dict):
         obs.update(order)
     elif order is not None:
@@ -170,7 +172,7 @@ def write_reports(df, out):
 
 
 def run_suite(csv_path=None, out_dir=None):
-    csv_path = Path(csv_path or ROOT / "test_cases.csv")
+    csv_path = Path(csv_path or os.environ.get("CASES_CSV") or ROOT / "test_cases.csv")   # CASES_CSV: dùng bộ case khác
     out = Path(out_dir or ROOT / "reports"); out.mkdir(parents=True, exist_ok=True)
     cases = load_cases(csv_path)
     df = pd.DataFrame([execute_case(c) for c in cases])

@@ -5,32 +5,35 @@ on:
   pull_request:
 
 jobs:
-  run-suite:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
 
-      - name: Suite on the original application (defect DEF-PMS-001 is expected to be found)
+      - name: Ứng dụng gốc (lỗi đã biết DEF-PMS-001 đánh dấu xfail-strict)
+        run: pytest -q --junitxml=junit-original.xml
+
+      - name: Bản sửa (regression, tất cả phải pass)
+        run: APP_MODULE=ecommerce_app_fixed pytest -q --junitxml=junit-fixed.xml
+
+      - name: Báo cáo HTML/Excel từ runner CSV
         run: |
           python test_runner.py reports_ci
-          python - <<'PY'
-          import csv
-          rows = list(csv.DictReader(open("reports_ci/test_execution.csv", encoding="utf-8-sig")))
-          fails = sorted(r["test_case_id"] for r in rows if r["execution_status"] == "FAIL")
-          assert len(rows) == 22, len(rows)
-          assert fails == ["TC-PMS-002", "TC-PMS-004"], fails
-          assert not any(r["execution_status"] == "BLOCKED" for r in rows)
-          PY
-
-      - name: Regression on the fixed copy (everything must pass)
-        run: |
           APP_MODULE=ecommerce_app_fixed python test_runner.py reports_ci_fixed
-          python - <<'PY'
-          import csv
-          rows = list(csv.DictReader(open("reports_ci_fixed/test_execution.csv", encoding="utf-8-sig")))
-          assert len(rows) == 22 and all(r["execution_status"] == "PASS" for r in rows)
-          PY
+
+      - name: Cổng mutation (bộ test phải bắt mọi mutant cài sẵn)
+        run: python mutation_check.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            junit-*.xml
+            reports_ci*/
